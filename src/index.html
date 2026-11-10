@@ -27,7 +27,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preload" href="fonts/rakkas-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/figtree-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" as="image" href="img/logo-hero-sm.avif" type="image/avif" imagesrcset="img/logo-hero-sm.avif 320w, img/logo-hero.avif 640w" imagesizes="(min-width: 900px) 420px, min(72vw, 330px)" fetchpriority="high">
+<link rel="preload" as="image" href="img/logo-hero-sm.avif" type="image/avif" imagesrcset="img/logo-hero-sm.avif 320w, img/logo-hero.avif 640w" imagesizes="(min-width: 900px) 260px, 132px" fetchpriority="high">
 <link rel="preload" href="data/menu.json" as="fetch" crossorigin>
 <link rel="preload" href="data/config.json" as="fetch" crossorigin>
 <script>
@@ -93,7 +93,7 @@
       <img src="img/logo-64.webp" srcset="img/logo-64.webp 1x, img/logo-128.webp 2x" width="40" height="40" alt="">
       <span class="brand__name">Casa Grill</span>
     </a>
-    <p class="status" id="status" aria-live="polite"><span class="status__dot" aria-hidden="true"></span><span class="status__text">Horaires…</span></p>
+    <a class="status" id="status" href="#infos" aria-live="polite"><span class="status__dot" aria-hidden="true"></span><span class="status__text">Horaires…</span></a>
     <button class="icon-btn" id="theme-toggle" type="button" aria-label="Passer en mode clair" aria-pressed="false">
       <svg class="i-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g></svg>
       <svg class="i-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" fill="currentColor"/></svg>
@@ -109,89 +109,88 @@
   <section class="hero" aria-labelledby="hero-title">
     <div class="wrap hero__inner">
       <picture class="hero__logo">
-        <source type="image/avif" srcset="img/logo-hero-sm.avif 320w, img/logo-hero.avif 640w" sizes="(min-width: 900px) 420px, min(72vw, 330px)">
-        <img src="img/logo-hero-sm.webp" srcset="img/logo-hero-sm.webp 320w, img/logo-hero.webp 640w" sizes="(min-width: 900px) 420px, min(72vw, 330px)" width="640" height="450" alt="Casa Grill &amp; Street Food" fetchpriority="high" decoding="async">
+        <source type="image/avif" srcset="img/logo-hero-sm.avif 320w, img/logo-hero.avif 640w" sizes="(min-width: 900px) 260px, 132px">
+        <img src="img/logo-hero-sm.webp" srcset="img/logo-hero-sm.webp 320w, img/logo-hero.webp 640w" sizes="(min-width: 900px) 260px, 132px" width="640" height="450" alt="Casa Grill &amp; Street Food" fetchpriority="high" decoding="async">
       </picture>
       <div class="hero__text">
-        <div class="hero__news" id="hero-news" hidden>
-          <span class="pill pill--new" id="hero-badge">Nouveau à Vayres</span>
-          <p class="hero__news-msg" id="hero-news-msg"></p>
-          <p class="countdown" id="countdown" hidden>
-            <span class="countdown__label" id="countdown-label">Grande ouverture dans</span>
-            <span class="countdown__units" role="timer" aria-live="off">
-              <span><b id="cd-d">0</b> j</span><span><b id="cd-h">0</b> h</span><span><b id="cd-m">0</b> min</span><span><b id="cd-s">0</b> s</span>
-            </span>
-          </p>
-        </div>
-        <h1 id="hero-title">Grillades et street food <span class="nowrap">à Vayres</span></h1>
+        <p class="hero__news" id="hero-news" hidden><span class="pill pill--new" id="hero-badge">Nouveau à Vayres</span></p>
+        <h1 id="hero-title">Grillades &amp; street food <span class="nowrap">à Vayres</span></h1>
         <ul class="badges" aria-label="Points forts">
-          <li class="pill pill--halal"><img src="img/halal-sm.webp" width="22" height="22" alt="" loading="lazy">Halal</li>
+          <li class="pill pill--halal"><img src="img/halal-sm.webp" width="20" height="20" alt="">Halal</li>
           <li class="pill">Sur place</li>
           <li class="pill">À emporter</li>
         </ul>
-        <div class="hero__ctas">
-          <a class="btn btn--primary" href="#carte">Commander</a>
-          <a class="btn btn--ghost" href="tel:+33754762724">Appeler</a>
-          <a class="btn btn--ghost" href="https://www.google.com/maps/dir/?api=1&amp;destination=Casa+Grill+1+avenue+de+Libourne+33870+Vayres" target="_blank" rel="noopener">Itinéraire</a>
-        </div>
+        <p class="countdown" id="countdown" hidden>
+          <span class="countdown__label" id="countdown-label">Grande ouverture dans</span>
+          <span class="countdown__units" role="timer" aria-live="off"><span><b id="cd-d">0</b> j</span><span><b id="cd-h">0</b> h</span><span><b id="cd-m">0</b> min</span><span><b id="cd-s">0</b> s</span></span>
+        </p>
       </div>
+    </div>
+    <div class="wrap hero__how">
+      <p><b>Commandez ici</b>, envoyez par WhatsApp, <b>payez au restaurant</b>.</p>
     </div>
   </section>
 
-  <section class="menu-section" id="carte" aria-labelledby="carte-title">
-    <div class="wrap menu-head">
-      <h2 id="carte-title" class="section-title">La carte</h2>
-      <p class="menu-head__sub">Touchez <b>Seul</b> ou <b>Menu</b> pour ajouter au panier, puis envoyez votre commande par WhatsApp.</p>
-      <button class="btn btn--ghost btn--sm" type="button" id="open-posters">
-        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" d="M4 5h16v14H4zM4 15l4.5-4.5 4 4 2.5-2.5L20 17"/></svg>
-        Voir la carte en images
-      </button>
-    </div>
+  <section class="menu-section" id="carte" aria-label="La carte">
     <nav class="tabs" id="tabs" aria-label="Catégories de la carte">
-      <div class="tabs__scroller" id="tabs-scroller"></div>
+      <div class="tabs__scroller" id="tabs-scroller" role="tablist"></div>
     </nav>
-    <div class="wrap" id="menu" aria-live="off">
+    <div class="wrap panel" id="panel" role="tabpanel" aria-labelledby="">
+      <div class="panel__head">
+        <h2 class="panel__title" id="panel-title">La carte</h2>
+        <button class="link-btn" type="button" id="open-posters">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" d="M4 5h16v14H4zM4 15l4.5-4.5 4 4 2.5-2.5L20 17"/></svg>
+          Carte en images
+        </button>
+      </div>
+      <p class="panel__note" id="panel-note" hidden></p>
+      <ul class="grid" id="menu"></ul>
       <noscript><p class="notice">Activez JavaScript pour commander en ligne, ou appelez le <a href="tel:+33754762724">07 54 76 27 24</a>. Carte en images : <a href="img/affiche-carte-street-food.webp">street food</a>, <a href="img/affiche-carte-assiettes.webp">assiettes &amp; desserts</a>.</p></noscript>
-    </div>
-    <div class="wrap">
       <p class="fine">Informations allergènes disponibles au restaurant. Photos non contractuelles.</p>
     </div>
   </section>
 
-  <section class="info-section" id="horaires" aria-labelledby="horaires-title">
-    <div class="wrap info-grid">
-      <div class="card">
-        <h2 id="horaires-title" class="section-title">Horaires</h2>
-        <table class="hours" id="hours-table">
-          <caption class="sr-only">Horaires d'ouverture (heure de Paris)</caption>
-          <tbody>
-            <tr data-day="mon"><th scope="row">Lundi</th><td>11h–15h · 17h–22h</td></tr>
-            <tr data-day="tue"><th scope="row">Mardi</th><td>11h–15h · 17h–22h</td></tr>
-            <tr data-day="wed"><th scope="row">Mercredi</th><td>11h–15h · 17h–22h</td></tr>
-            <tr data-day="thu"><th scope="row">Jeudi</th><td>11h–15h · 17h–22h</td></tr>
-            <tr data-day="fri"><th scope="row">Vendredi</th><td>11h–15h · 17h–22h</td></tr>
-            <tr data-day="sat"><th scope="row">Samedi</th><td>11h–15h · 17h–22h</td></tr>
-            <tr data-day="sun"><th scope="row">Dimanche</th><td>16h–21h</td></tr>
-          </tbody>
-        </table>
-        <p class="closures" id="closures" hidden></p>
-      </div>
-
-      <div class="card" id="acces" aria-labelledby="acces-title">
-        <h2 id="acces-title" class="section-title">Accès</h2>
-        <address class="addr">
-          <strong>1 avenue de Libourne, 33870 Vayres</strong>
-          <span>Face à la pharmacie, à côté de l'Ours Bleu</span>
-        </address>
-        <div class="map" id="map">
-          <button type="button" class="map__load" id="map-load">
-            <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
-            <span>Afficher la carte Google Maps</span>
-          </button>
+  <section class="infos" id="infos" aria-labelledby="infos-title">
+    <div class="wrap">
+      <h2 class="sr-only" id="infos-title">Horaires et accès</h2>
+      <div class="info-card">
+        <details class="info-row" id="hours-details">
+          <summary>
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span class="info-row__text"><b>Horaires</b><span id="today-hours">Lun–sam 11h–15h · 17h–22h · Dim 16h–21h</span></span>
+            <span class="chev" aria-hidden="true"></span>
+          </summary>
+          <table class="hours" id="hours-table">
+            <caption class="sr-only">Horaires d'ouverture (heure de Paris)</caption>
+            <tbody>
+              <tr data-day="mon"><th scope="row">Lundi</th><td>11h–15h · 17h–22h</td></tr>
+              <tr data-day="tue"><th scope="row">Mardi</th><td>11h–15h · 17h–22h</td></tr>
+              <tr data-day="wed"><th scope="row">Mercredi</th><td>11h–15h · 17h–22h</td></tr>
+              <tr data-day="thu"><th scope="row">Jeudi</th><td>11h–15h · 17h–22h</td></tr>
+              <tr data-day="fri"><th scope="row">Vendredi</th><td>11h–15h · 17h–22h</td></tr>
+              <tr data-day="sat"><th scope="row">Samedi</th><td>11h–15h · 17h–22h</td></tr>
+              <tr data-day="sun"><th scope="row">Dimanche</th><td>16h–21h</td></tr>
+            </tbody>
+          </table>
+          <p class="closures" id="closures" hidden></p>
+        </details>
+        <a class="info-row" href="https://www.google.com/maps/dir/?api=1&amp;destination=Casa+Grill+1+avenue+de+Libourne+33870+Vayres" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+          <span class="info-row__text"><b>1 avenue de Libourne, 33870 Vayres</b><span>Face à la pharmacie, à côté de l'Ours Bleu · Itinéraire</span></span>
+          <span class="chev chev--out" aria-hidden="true"></span>
+        </a>
+        <a class="info-row" href="tel:+33754762724">
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>
+          <span class="info-row__text"><b>07 54 76 27 24</b><span>casagrill33@gmail.com</span></span>
+          <span class="chev chev--out" aria-hidden="true"></span>
+        </a>
+        <div class="info-row info-row--links" id="footer-delivery" hidden>
+          <span class="info-row__text"><b>Livraison</b></span>
+          <div class="row-btns" id="delivery-links"></div>
         </div>
-        <div class="row-btns">
-          <a class="btn btn--primary" href="https://www.google.com/maps/dir/?api=1&amp;destination=Casa+Grill+1+avenue+de+Libourne+33870+Vayres" target="_blank" rel="noopener">Itinéraire</a>
-          <a class="btn btn--ghost" href="tel:+33754762724">07 54 76 27 24</a>
+        <div class="info-row info-row--links" id="footer-social" hidden>
+          <span class="info-row__text"><b>Suivez-nous</b></span>
+          <div class="row-btns" id="social-links"></div>
         </div>
       </div>
     </div>
@@ -199,27 +198,7 @@
 </main>
 
 <footer class="site-footer">
-  <div class="wrap footer-grid">
-    <div>
-      <p class="footer-brand">Casa Grill &amp; Street Food</p>
-      <p>1 avenue de Libourne, 33870 Vayres<br>Face à la pharmacie, à côté de l'Ours Bleu</p>
-      <p><a href="tel:+33754762724">07 54 76 27 24</a><br><a href="mailto:casagrill33@gmail.com">casagrill33@gmail.com</a></p>
-    </div>
-    <div id="footer-delivery" hidden>
-      <p class="footer-h">Livraison</p>
-      <div class="row-btns" id="delivery-links"></div>
-    </div>
-    <div id="footer-social" hidden>
-      <p class="footer-h">Suivez-nous</p>
-      <div class="row-btns" id="social-links"></div>
-    </div>
-    <div>
-      <p class="footer-h">Infos</p>
-      <p><a href="mentions-legales.html">Mentions légales &amp; confidentialité</a></p>
-      <p class="fine">Halal · Sur place &amp; à emporter · Paiement au restaurant.<br>Informations allergènes disponibles au restaurant.</p>
-    </div>
-  </div>
-  <p class="wrap copyright">© <span id="year">2026</span> Casa Grill Vayres</p>
+  <p class="wrap">© <span id="year">2026</span> Casa Grill &amp; Street Food · Halal · Paiement au restaurant · <a href="mentions-legales.html">Mentions légales</a></p>
 </footer>
 
 <!-- Barre panier -->
@@ -231,16 +210,69 @@
   </button>
 </div>
 
-<!-- Fenêtre de choix (boisson, parfum…) -->
-<dialog class="sheet" id="choice-sheet" aria-labelledby="choice-title">
-  <form method="dialog" class="sheet__inner" id="choice-form">
-    <div class="sheet__head">
-      <h2 id="choice-title">Choix</h2>
-      <button class="icon-btn" type="button" data-close aria-label="Fermer"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+<!-- Fiche produit -->
+<dialog class="sheet sheet--product" id="product-sheet" aria-labelledby="p-name">
+  <form method="dialog" class="sheet__inner" id="product-form" novalidate>
+    <div class="sheet__body">
+      <button class="icon-btn sheet__x" type="button" data-close aria-label="Fermer"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+      <div class="p-img" id="p-img"></div>
+      <h2 class="p-name" id="p-name">Produit</h2>
+      <p class="p-desc" id="p-desc"></p>
+      <div id="p-variants"></div>
+      <div id="p-groups"></div>
     </div>
-    <div class="sheet__body" id="choice-body"></div>
+    <div class="sheet__foot sheet__foot--row">
+      <div class="stepper" aria-label="Quantité">
+        <button type="button" id="p-minus" aria-label="Diminuer la quantité">−</button>
+        <output id="p-qty" aria-live="polite">1</output>
+        <button type="button" id="p-plus" aria-label="Augmenter la quantité">+</button>
+      </div>
+      <button class="btn btn--primary p-add" type="submit" id="p-add">Ajouter · 0,00 €</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Couscous / tajine sur commande -->
+<dialog class="sheet sheet--product" id="request-sheet" aria-labelledby="r-title">
+  <form class="sheet__inner" id="request-form" novalidate>
+    <div class="sheet__body">
+      <button class="icon-btn sheet__x" type="button" data-close aria-label="Fermer"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+      <div class="p-img"><picture><source type="image/avif" srcset="img/couscous.avif"><img src="img/couscous.webp" width="480" height="232" alt="Tajine et couscous" loading="lazy"></picture></div>
+      <h2 class="p-name" id="r-title">Couscous &amp; tajine</h2>
+      <p class="p-desc">Préparés uniquement sur commande. Envoyez votre demande : le restaurant vous confirme le jour, l'heure et le prix.</p>
+      <fieldset class="group">
+        <legend>Votre plat</legend>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="r-plat" id="r-plat-couscous" value="Couscous" checked><span>Couscous</span></label>
+          <label class="opt"><input type="radio" name="r-plat" id="r-plat-tajine" value="Tajine"><span>Tajine</span></label>
+        </div>
+      </fieldset>
+      <div class="form-grid">
+        <div class="field">
+          <label for="r-people">Personnes</label>
+          <input id="r-people" type="number" inputmode="numeric" min="1" max="50" value="2" required>
+        </div>
+        <div class="field">
+          <label for="r-date">Pour le</label>
+          <input id="r-date" type="date" required>
+        </div>
+      </div>
+      <div class="field">
+        <label for="r-name">Prénom</label>
+        <input id="r-name" type="text" autocomplete="given-name" maxlength="40" required>
+      </div>
+      <div class="field">
+        <label for="r-notes">Précisions <span class="muted">(viande, heure, sur place ou à emporter…)</span></label>
+        <textarea id="r-notes" rows="2" maxlength="400"></textarea>
+      </div>
+      <p class="err" id="r-err" hidden>Indiquez votre prénom, le nombre de personnes et la date.</p>
+    </div>
     <div class="sheet__foot">
-      <button class="btn btn--primary btn--block" type="submit" id="choice-submit">Ajouter</button>
+      <a class="btn btn--wa btn--block" id="r-wa" href="https://wa.me/33754762724" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg>
+        Demander sur WhatsApp
+      </a>
+      <a class="btn btn--ghost btn--block" href="tel:+33754762724">Appeler le 07 54 76 27 24</a>
     </div>
   </form>
 </dialog>

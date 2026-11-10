@@ -152,7 +152,8 @@
     var s = statusText(getStatus(now)), el = $('#status');
     el.className = 'status ' + s.cls;
     $('.status__text', el).textContent = s.txt;
-    var key = DAYS[now.getUTCDay()];
+    var key = DAYS[now.getUTCDay()], ivs = intervals(dayStart(now));
+    $('#today-hours').textContent = 'Aujourd\u2019hui : ' + (ivs.length ? ivs.map(function (r) { return hLabel(r[0]) + '–' + hLabel(r[1]); }).join(' · ') : 'fermé') + ' · voir la semaine';
     $$('#hours-table tr').forEach(function (tr) {
       var on = tr.dataset.day === key;
       tr.classList.toggle('is-today', on);
@@ -209,8 +210,7 @@
     mq.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse' && !e.target.closest('.marquee__close')) mq.classList.toggle('is-paused'); });
     $('#marquee-close').addEventListener('click', function () { store.set(BANNER_KEY, String(Date.now())); mq.hidden = true; });
     $('#hero-badge').textContent = b.heroBadge || 'Nouveau à Vayres';
-    $('#hero-news-msg').textContent = msgs[0];
-    $('#countdown-label').textContent = b.countdownLabel || 'Grande ouverture dans';
+        $('#countdown-label').textContent = b.countdownLabel || 'Grande ouverture dans';
     bannerReady = true;
     updateBannerVisibility(parisNow());
   }
@@ -235,135 +235,206 @@
   }
 
   /* ------------------------------------------------------------------
-   * Carte interactive
+   * Carte : onglets (une catégorie à la fois) + vignettes
    * ------------------------------------------------------------------ */
-  var ITEMS = {};
-  function pic(name, w, h, cls, sizes) {
+  var ITEMS = {}, CATS = {}, currentCat = null;
+  function pic(name, w, h, cls, sizes, eager) {
     var sm = 'img/' + name + '-sm', lg = 'img/' + name;
-    var set = sizes ? { avif: sm + '.avif 320w, ' + lg + '.avif 640w', webp: sm + '.webp 320w, ' + lg + '.webp 640w' } : { avif: sm + '.avif', webp: sm + '.webp' };
-    var sz = sizes ? ' sizes="' + sizes + '"' : '';
-    return '<picture class="' + cls + '"><source type="image/avif" srcset="' + set.avif + '"' + sz + '><img src="' + sm + '.webp" srcset="' + set.webp + '"' + sz + ' width="' + w + '" height="' + h + '" alt="" loading="lazy" decoding="async"></picture>';
+    var sz = ' sizes="' + (sizes || '50vw') + '"';
+    return '<picture class="' + cls + '"><source type="image/avif" srcset="' + sm + '.avif 320w, ' + lg + '.avif 640w"' + sz + '>' +
+      '<img src="' + sm + '.webp" srcset="' + sm + '.webp 320w, ' + lg + '.webp 640w"' + sz + ' width="' + w + '" height="' + h + '" alt=""' + (eager ? '' : ' loading="lazy"') + ' decoding="async"></picture>';
+  }
+  function fromPrice(it) {
+    if (it.onRequest) return { main: 'Sur commande', sub: '' };
+    var v = it.variants, min = Math.min.apply(null, v.map(function (x) { return x.price; }));
+    var sub = v.length > 1 ? v.slice(1).map(function (x) { return x.label + ' ' + euro(x.price); }).join(' · ') : '';
+    return { main: euro(min), sub: sub };
   }
   function renderMenu() {
-    var html = '';
     DATA.categories.forEach(function (cat) {
-      html += '<section class="cat" id="cat-' + cat.id + '" aria-labelledby="h-' + cat.id + '"><h3 class="cat__title" id="h-' + cat.id + '">' + esc(cat.name) + '</h3>';
-      if (cat.note) html += '<p class="cat__note">' + esc(cat.note) + '</p>';
-      if (cat.banner) html += pic(cat.banner, 640, cat.banner === 'boissons' ? 239 : 281, 'cat__banner cat__banner--' + cat.banner, '(min-width: 1100px) 1068px, calc(100vw - 32px)');
-      html += '<ul class="items">';
-      cat.items.forEach(function (it) {
-        ITEMS[it.id] = it; it.cat = cat.id;
-        html += '<li class="item' + (it.img ? '' : ' item--noimg') + '">';
-        if (it.img) html += pic(it.img, 104, 78, 'item__img');
-        html += '<div class="item__body"><h4 class="item__name">' + esc(it.name) + '</h4>' + (it.desc ? '<p class="item__desc">' + esc(it.desc) + '</p>' : '') + '</div><div class="item__acts">';
-        it.variants.forEach(function (v) {
-          var unique = v.id === 'unique';
-          html += '<button type="button" class="add' + (v.id === 'menu' ? ' add--menu' : '') + '" data-item="' + it.id + '" data-variant="' + v.id + '">' +
-            '<span class="sr-only">' + (unique ? esc(v.label) + ' ' + esc(it.name) : 'Ajouter ' + esc(it.name)) + ' </span><span class="add__label"' + (unique ? ' aria-hidden="true"' : '') + '>' + esc(v.label) + '</span><span class="add__price">' + euro(v.price) + '</span><span class="add__plus" aria-hidden="true">+</span></button>';
-        });
-        html += '</div></li>';
-      });
-      html += '</ul></section>';
+      CATS[cat.id] = cat;
+      cat.items.forEach(function (it) { ITEMS[it.id] = it; it.cat = cat.id; });
     });
-    $('#menu').insertAdjacentHTML('beforeend', html);
     $('#menu').addEventListener('click', function (e) {
-      var b = e.target.closest('.add'); if (!b) return;
-      var it = ITEMS[b.dataset.item], v = it.variants.filter(function (x) { return x.id === b.dataset.variant; })[0];
-      if (v.choices && v.choices.length) openChoice(it, v, b);
-      else { addLine(it, v, []); flash(b); }
+      var b = e.target.closest('.tile'); if (!b) return;
+      var it = ITEMS[b.dataset.item];
+      if (it.onRequest) openRequest(it); else openProduct(it);
     });
   }
-  function flash(b) {
-    b.classList.add('is-added');
-    setTimeout(function () { b.classList.remove('is-added'); }, 700);
+  function showCat(id, focusTab) {
+    var cat = CATS[id] || DATA.categories[0];
+    currentCat = cat.id;
+    $('#panel-title').textContent = cat.name;
+    $('#panel').setAttribute('aria-labelledby', 'tab-' + cat.id);
+    var note = $('#panel-note'); note.hidden = !cat.note; note.textContent = cat.note || '';
+    $('#menu').className = 'grid' + (cat.compact ? ' grid--3' : '');
+    $('#menu').innerHTML = cat.items.map(function (it, i) {
+      var p = fromPrice(it);
+      return '<li><button type="button" class="tile" data-item="' + it.id + '">' +
+        '<span class="tile__img">' + (it.img ? pic(it.img, 320, 240, 'tile__pic', cat.compact ? '(min-width: 700px) 160px, 31vw' : '(min-width: 1000px) 240px, (min-width: 700px) 30vw, 46vw', i < 4) : '') +
+        (it.badge ? '<span class="tile__badge">' + esc(it.badge) + '</span>' : '') + '</span>' +
+        '<span class="tile__name">' + esc(it.name) + '</span>' +
+        (it.desc ? '<span class="tile__desc">' + esc(it.desc) + '</span>' : '') +
+        '<span class="tile__foot"><span class="tile__price">' + p.main + (p.sub ? '<small>' + esc(p.sub) + '</small>' : '') + '</span><span class="tile__plus" aria-hidden="true">+</span></span>' +
+        '</button></li>';
+    }).join('');
+    $$('#tabs-scroller .tab').forEach(function (t) {
+      var on = t.dataset.cat === cat.id;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      if (on) centerTab(t);
+      if (on && focusTab) t.focus();
+    });
   }
-
-  // Onglets collants : fondu sur les bords + onglet actif recentré.
+  function centerTab(t) {
+    var sc = $('#tabs-scroller');
+    var left = t.offsetLeft - (sc.clientWidth - t.offsetWidth) / 2;
+    sc.scrollTo({ left: Math.max(0, left), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  }
   function initTabs() {
     var sc = $('#tabs-scroller');
-    sc.innerHTML = DATA.categories.map(function (c) { return '<a class="tab" href="#cat-' + c.id + '" data-cat="' + c.id + '">' + esc(c.name) + '</a>'; }).join('');
+    sc.innerHTML = DATA.categories.map(function (c) {
+      var icon = c.icon ? '<img src="img/' + c.icon + '-sm.webp" width="36" height="36" alt="" loading="lazy">' : '';
+      return '<button type="button" class="tab" role="tab" id="tab-' + c.id + '" data-cat="' + c.id + '" aria-controls="panel">' + icon + '<span>' + esc(c.name) + '</span></button>';
+    }).join('');
     var fades = function () {
       sc.classList.toggle('at-start', sc.scrollLeft <= 2);
       sc.classList.toggle('at-end', sc.scrollLeft + sc.clientWidth >= sc.scrollWidth - 2);
     };
     sc.addEventListener('scroll', fades, { passive: true });
     window.addEventListener('resize', fades);
+    sc.addEventListener('click', function (e) {
+      var t = e.target.closest('.tab'); if (!t || t.dataset.cat === currentCat) return;
+      showCat(t.dataset.cat);
+      // Garde les onglets en haut de l'écran si on était plus bas.
+      var top = $('#carte').getBoundingClientRect().top;
+      if (top < 0) window.scrollTo({ top: window.scrollY + top - $('.site-header').offsetHeight + 1, behavior: 'auto' });
+    });
+    sc.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      var ids = DATA.categories.map(function (c) { return c.id; }), i = ids.indexOf(currentCat);
+      i = (i + (e.key === 'ArrowRight' ? 1 : ids.length - 1)) % ids.length;
+      showCat(ids[i], true); e.preventDefault();
+    });
+    showCat(DATA.categories[0].id);
     fades();
-    var current = null;
-    var setActive = function (id) {
-      if (id === current) return; current = id;
-      $$('.tab', sc).forEach(function (t) {
-        var on = t.dataset.cat === id;
-        if (on) {
-          t.setAttribute('aria-current', 'true');
-          var left = t.offsetLeft - (sc.clientWidth - t.offsetWidth) / 2;
-          sc.scrollTo({ left: Math.max(0, left), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-        } else t.removeAttribute('aria-current');
-      });
-    };
-    var secs = DATA.categories.map(function (c) { return document.getElementById('cat-' + c.id); });
-    var onScroll = function () {
-      var line = $('.site-header').offsetHeight + $('#tabs').offsetHeight + 24, id = DATA.categories[0].id;
-      secs.forEach(function (s) { if (s.getBoundingClientRect().top <= line) id = s.id.slice(4); });
-      setActive(id);
-    };
-    var raf = 0;
-    window.addEventListener('scroll', function () { if (!raf) raf = requestAnimationFrame(function () { raf = 0; onScroll(); }); }, { passive: true });
-    onScroll();
   }
 
   /* ------------------------------------------------------------------
-   * Fenêtre de choix (boisson, parfum, formule…)
+   * Fiche produit (formule, options, quantité)
    * ------------------------------------------------------------------ */
-  var choiceSheet = $('#choice-sheet'), choiceCtx = null;
+  var productSheet = $('#product-sheet'), pc = null;
   function resolveGroup(g) {
-    var def = typeof g === 'string' ? Object.assign({ id: g }, DATA.choiceGroups[g]) : g;
-    def.options = def.options.map(function (o) { return typeof o === 'string' ? { label: o, price: 0 } : { label: o.label, price: o.price || 0 }; });
-    def.priced = def.options.some(function (o) { return o.price; });
-    return def;
+    var base = typeof g === 'string' ? Object.assign({ id: g }, DATA.choiceGroups[g]) : g.use ? Object.assign({ id: g.use }, DATA.choiceGroups[g.use], g) : Object.assign({}, g);
+    base.type = base.type || 'one';
+    base.options = base.options.map(function (o) { return typeof o === 'string' ? { label: o, price: 0 } : { label: o.label, price: o.price || 0 }; });
+    if (base.type === 'one') { base.min = 1; base.max = 1; }
+    if (base.min == null) base.min = 0;
+    if (base.max == null) base.max = base.options.length;
+    base.radio = base.max === 1 && base.min === 1;
+    return base;
   }
-  function openChoice(it, v, btn) {
-    var groups = v.choices.map(resolveGroup);
-    choiceCtx = { it: it, v: v, groups: groups, btn: btn };
-    $('#choice-title').textContent = it.name + (v.id === 'unique' ? '' : ' · ' + v.label);
-    $('#choice-body').innerHTML = groups.map(function (g, gi) {
-      var wide = g.options.some(function (o) { return o.label.length > 16; });
-      return '<fieldset class="choice-group"><legend>' + esc(g.label) + '</legend><div class="choice-opts' + (wide ? ' choice-opts--wide' : '') + '">' +
+  function openProduct(it) {
+    pc = { it: it, v: it.variants[0], qty: 1, sel: {} };
+    $('#p-img').innerHTML = it.img ? pic(it.img, 320, 240, 'p-pic', '(min-width: 600px) 520px, 100vw', true) : '';
+    $('#p-name').textContent = it.name;
+    var d = $('#p-desc'); d.textContent = [it.desc, it.badge === 'Thé offert' ? 'Thé offert avec cette assiette.' : ''].filter(Boolean).join(' · '); d.hidden = !d.textContent;
+    $('#p-variants').innerHTML = it.variants.length > 1 ? '<fieldset class="group"><legend>Formule</legend><div class="opts opts--variants">' + it.variants.map(function (v, i) {
+      return '<label class="opt opt--variant"><input type="radio" name="variant" value="' + i + '"' + (i === 0 ? ' checked' : '') + '><span><b>' + esc(v.label) + '</b>' + (v.sub ? '<small>' + esc(v.sub) + '</small>' : '') + '<em>' + euro(v.price) + '</em></span></label>';
+    }).join('') + '</div></fieldset>' : '';
+    renderGroups();
+    $('#p-qty').textContent = '1';
+    updateProduct();
+    productSheet.showModal();
+    $('.sheet__body', productSheet).scrollTop = 0;
+  }
+  function currentGroups() {
+    return (pc.it.groups || []).concat(pc.v.groups || []).map(resolveGroup);
+  }
+  function renderGroups() {
+    pc.groups = currentGroups();
+    $('#p-groups').innerHTML = pc.groups.map(function (g, gi) {
+      var prev = pc.sel[g.id] || [];
+      var defaultFirst = g.radio && !prev.length && g.options[0].price === 0 && g.options.some(function (o) { return o.price; });
+      var wide = g.options.some(function (o) { return o.label.length > 15; });
+      var hint = g.radio ? 'Obligatoire' : g.min === g.max ? 'Choisissez ' + g.min : g.min ? 'Au moins ' + g.min : 'Facultatif' + (g.max < g.options.length ? ', ' + g.max + ' max.' : '');
+      return '<fieldset class="group" data-g="' + gi + '"><legend>' + esc(g.label) + ' <span class="group__hint" data-hint>' + hint + '</span></legend><div class="opts' + (wide ? ' opts--wide' : '') + '">' +
         g.options.map(function (o, oi) {
-          return '<label class="opt"><input type="radio" name="g' + gi + '" value="' + oi + '"' + (g.priced && oi === 0 ? ' checked' : '') + ' required><span>' + esc(o.label) + (o.price ? ' <small>+' + euro(o.price) + '</small>' : '') + '</span></label>';
-        }).join('') + '</div><p class="choice-err" hidden>Faites un choix.</p></fieldset>';
+          var on = prev.indexOf(oi) > -1 || (defaultFirst && oi === 0);
+          return '<label class="opt"><input type="' + (g.radio ? 'radio' : 'checkbox') + '" name="g-' + g.id + '" value="' + oi + '"' + (on ? ' checked' : '') + '><span>' + esc(o.label) + (o.price ? '<small>+' + euro(o.price) + '</small>' : '') + '</span></label>';
+        }).join('') + '</div></fieldset>';
     }).join('');
-    updateChoicePrice();
-    choiceSheet.showModal();
   }
-  function choiceSelection() {
-    var sel = [], price = choiceCtx.v.price, missing = [];
-    choiceCtx.groups.forEach(function (g, gi) {
-      var r = $('input[name="g' + gi + '"]:checked', choiceSheet);
-      if (!r) { missing.push(gi); return; }
-      var o = g.options[+r.value]; sel.push(o.label); price += o.price;
+  function readSel() {
+    var price = pc.v.price, labels = [], missing = -1;
+    pc.groups.forEach(function (g, gi) {
+      var fs = $('[data-g="' + gi + '"]', productSheet);
+      var picked = $$('input:checked', fs).map(function (i) { return +i.value; });
+      pc.sel[g.id] = picked;
+      if (!g.radio) {
+        var full = picked.length >= g.max;
+        $$('input', fs).forEach(function (i) { i.disabled = full && !i.checked; });
+        $('[data-hint]', fs).textContent = g.min === g.max ? picked.length + '/' + g.max : (g.min ? 'Au moins ' + g.min : 'Facultatif') + (g.max < g.options.length ? ' · ' + picked.length + '/' + g.max : '');
+      }
+      if (picked.length < g.min && missing < 0) missing = gi;
+      picked.forEach(function (oi) { var o = g.options[oi]; price += o.price; labels.push(o.label); });
     });
-    return { sel: sel, price: price, missing: missing };
+    return { price: price, labels: labels, missing: missing };
   }
-  function updateChoicePrice() {
-    $('#choice-submit').textContent = 'Ajouter · ' + euro(choiceSelection().price);
+  function updateProduct() {
+    var s = readSel();
+    $('#p-add').textContent = 'Ajouter · ' + euro(s.price * pc.qty);
+    $('#p-minus').disabled = pc.qty <= 1;
   }
-  $('#choice-form').addEventListener('change', function (e) {
-    updateChoicePrice();
-    var fs = e.target.closest('.choice-group'); if (fs) $('.choice-err', fs).hidden = true;
+  $('#product-form').addEventListener('change', function (e) {
+    if (e.target.name === 'variant') { pc.v = pc.it.variants[+e.target.value]; renderGroups(); }
+    var fs = e.target.closest('.group'); if (fs) fs.classList.remove('is-missing');
+    updateProduct();
   });
-  $('#choice-form').addEventListener('submit', function (e) {
+  $('#p-minus').addEventListener('click', function () { if (pc.qty > 1) { pc.qty--; $('#p-qty').textContent = pc.qty; updateProduct(); } });
+  $('#p-plus').addEventListener('click', function () { if (pc.qty < 30) { pc.qty++; $('#p-qty').textContent = pc.qty; updateProduct(); } });
+  $('#product-form').addEventListener('submit', function (e) {
     e.preventDefault();
-    var s = choiceSelection();
-    if (s.missing.length) {
-      var fss = $$('.choice-group', choiceSheet);
-      s.missing.forEach(function (gi) { $('.choice-err', fss[gi]).hidden = false; });
-      $('input', fss[s.missing[0]]).focus();
+    var s = readSel();
+    if (s.missing > -1) {
+      var fs = $('[data-g="' + s.missing + '"]', productSheet);
+      fs.classList.add('is-missing');
+      fs.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      toast('Choix manquant : ' + pc.groups[s.missing].label.toLowerCase());
       return;
     }
-    addLine(choiceCtx.it, choiceCtx.v, s.sel, s.price);
-    choiceSheet.close();
-    flash(choiceCtx.btn);
+    addLine(pc.it, pc.v, s.labels, s.price, pc.qty);
+    productSheet.close();
+  });
+
+  /* Couscous / tajine sur commande */
+  var requestSheet = $('#request-sheet');
+  function openRequest(it) {
+    var d = $('#r-date'), t = addDays(dayStart(parisNow()), 1);
+    d.min = ymd(t); if (!d.value || d.value < d.min) d.value = ymd(addDays(t, 1));
+    $('#r-plat-' + it.id).checked = true;
+    $('#r-err').hidden = true;
+    updateRequest();
+    requestSheet.showModal();
+  }
+  function requestText() {
+    var plat = ($('input[name="r-plat"]:checked') || {}).value || 'Couscous';
+    var date = parseWall($('#r-date').value), notes = $('#r-notes').value.trim();
+    return ['Bonjour Casa Grill ! Je souhaite commander :', '',
+      '• ' + plat + ' pour ' + ($('#r-people').value || '?') + ' personne(s)',
+      'Pour le : ' + (date ? dLabel(date) : '—'),
+      'Prénom : ' + ($('#r-name').value.trim() || '—')].concat(notes ? ['Précisions : ' + notes] : []).concat(['', 'Pouvez-vous me confirmer le prix et l’heure ? Merci !']).join('\n');
+  }
+  function updateRequest() { $('#r-wa').href = 'https://wa.me/' + DATA.restaurant.whatsapp + '?text=' + encodeURIComponent(requestText()); }
+  $('#request-form').addEventListener('input', updateRequest);
+  $('#request-form').addEventListener('change', updateRequest);
+  $('#request-form').addEventListener('submit', function (e) { e.preventDefault(); });
+  $('#r-wa').addEventListener('click', function (e) {
+    var ok = $('#r-name').value.trim() && +$('#r-people').value > 0 && $('#r-date').value;
+    $('#r-err').hidden = !!ok;
+    if (!ok) { e.preventDefault(); return; }
+    updateRequest();
+    setTimeout(function () { requestSheet.close(); toast('Demande prête dans WhatsApp : appuyez sur Envoyer'); }, 400);
   });
 
   /* ------------------------------------------------------------------
@@ -374,13 +445,14 @@
     try { var c = JSON.parse(store.get(CART_KEY) || '[]'); if (Array.isArray(c)) cart = c.filter(function (l) { return ITEMS[l.item] && l.qty > 0; }); } catch (e) { cart = []; }
   }
   function saveCart() { store.set(CART_KEY, JSON.stringify(cart)); }
-  function addLine(it, v, sel, price) {
+  function addLine(it, v, sel, price, qty) {
+    qty = qty || 1;
     var key = [it.id, v.id].concat(sel).join('|');
     var ex = cart.filter(function (l) { return l.key === key; })[0];
-    if (ex) ex.qty++;
-    else cart.push({ key: key, item: it.id, name: it.name, variant: v.id === 'unique' ? '' : v.label, opts: sel, unit: price == null ? v.price : price, qty: 1, ask: it.askDetails || '', student: !!it.student });
+    if (ex) ex.qty += qty;
+    else cart.push({ key: key, item: it.id, name: it.name, variant: v.id === 'unique' ? '' : v.label, opts: sel, unit: price == null ? v.price : price, qty: qty, student: !!it.student });
     saveCart(); renderCart(true);
-    toast('Ajouté : ' + it.name + (v.id === 'unique' ? '' : ' (' + v.label + ')') + (it.askDetails ? ' · ' + it.askDetails.toLowerCase() + ' dans « Précisions »' : ''));
+    toast('Ajouté : ' + (qty > 1 ? qty + ' × ' : '') + it.name + (v.id === 'unique' ? '' : ' (' + v.label + ')'));
   }
   var totals = function () { return cart.reduce(function (a, l) { a.n += l.qty; a.t += l.qty * l.unit; return a; }, { n: 0, t: 0 }); };
   function renderCart(bump) {
@@ -396,7 +468,7 @@
     $('#cart-lines').innerHTML = cart.map(function (l, i) {
       var sub = [l.variant].concat(l.opts).filter(Boolean).join(' · ');
       return '<li class="line"><span class="line__name">' + esc(l.name) + '</span><span class="line__price">' + euro(l.unit * l.qty) + '</span>' +
-        '<span class="line__opts">' + esc(sub) + (l.ask ? (sub ? '<br>' : '') + '→ ' + esc(l.ask) + ' dans « Précisions »' : '') + '</span>' +
+        '<span class="line__opts">' + esc(sub) + '</span>' +
         '<span class="qty"><button type="button" data-dec="' + i + '" aria-label="Retirer un ' + esc(l.name) + '">−</button><output aria-label="Quantité">' + l.qty + '</output><button type="button" data-inc="' + i + '" aria-label="Ajouter un ' + esc(l.name) + '">+</button></span></li>';
     }).join('');
     checkStudent(); updateWaLink();
@@ -544,15 +616,6 @@
     });
     sync();
   }
-  function initMap() {
-    $('#map-load').addEventListener('click', function () {
-      var f = document.createElement('iframe');
-      f.src = 'https://maps.google.com/maps?q=' + encodeURIComponent('Casa Grill, 1 avenue de Libourne, 33870 Vayres') + '&z=16&output=embed';
-      f.title = 'Plan d\u2019accès : 1 avenue de Libourne, Vayres';
-      f.loading = 'lazy'; f.referrerPolicy = 'no-referrer-when-downgrade'; f.allowFullscreen = true;
-      $('#map').appendChild(f); this.remove();
-    });
-  }
   function initPosters() {
     var dlg = $('#posters');
     $('#open-posters').addEventListener('click', function () {
@@ -611,7 +674,7 @@
     clearTimeout(toastT); toastT = setTimeout(function () { t.classList.remove('is-on'); }, 2600);
   }
 
-  initTheme(); initMap(); initPosters(); initDialogs();
+  initTheme(); initPosters(); initDialogs();
 
   // En production, build.mjs insère menu.json et config.json dans la page (pas de requête, pas de décalage d'affichage).
   var inline = document.getElementById('cg-data');

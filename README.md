@@ -6,7 +6,7 @@ Site statique, mobile-first, en HTML/CSS/JS vanilla (aucun framework, aucune dé
 
 | Je veux changer… | Fichier |
 |---|---|
-| un prix, un plat, une catégorie, les horaires, le téléphone | `src/data/menu.json` |
+| un prix, un plat, une catégorie, les options (viandes, suppléments, boissons), les horaires | `src/data/menu.json` |
 | le bandeau « Spéciale ouverture » (textes, dates) | `src/data/config.json` → `banner` |
 | une fermeture exceptionnelle (jour férié, congés) | `src/data/config.json` → `closures` |
 | les liens Uber Eats / Deliveroo / Facebook / Instagram / TikTok | `src/data/config.json` → `links` (un lien vide = bouton masqué) |
