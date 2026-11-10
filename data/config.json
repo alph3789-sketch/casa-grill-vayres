@@ -1,0 +1,32 @@
+{
+  "_aide": "Réglages du site. Dates au format AAAA-MM-JJTHH:MM (heure de Paris). Laissez un lien vide (\"\") pour masquer le bouton correspondant. Fermetures exceptionnelles : ajoutez { \"date\": \"2026-12-25\", \"label\": \"Noël\" } pour un jour, ou { \"from\": \"2027-08-01\", \"to\": \"2027-08-15\", \"label\": \"Congés\" } pour une période.",
+  "banner": {
+    "enabled": true,
+    "announceFrom": "2026-11-01T00:00",
+    "startDate": "2026-11-09T11:00",
+    "endDate": "2026-12-14T23:59",
+    "heroBadge": "Nouveau à Vayres",
+    "countdownLabel": "Grande ouverture dans",
+    "messages": [
+      "GRANDE OUVERTURE à Vayres",
+      "Halal • Sur place & à emporter",
+      "Prix étudiant 6 € du lundi au vendredi midi",
+      "Commandez en ligne via WhatsApp"
+    ]
+  },
+  "closures": [],
+  "links": {
+    "ubereats": "",
+    "deliveroo": "",
+    "facebook": "",
+    "instagram": "",
+    "tiktok": ""
+  },
+  "analytics": {
+    "provider": "",
+    "plausibleDomain": "casagrill-vayres.fr",
+    "plausibleSrc": "https://plausible.io/js/script.js",
+    "umamiSrc": "",
+    "umamiWebsiteId": ""
+  }
+}
