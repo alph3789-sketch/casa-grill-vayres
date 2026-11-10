@@ -357,7 +357,7 @@
       var prev = pc.sel[g.id] || [];
       var defaultFirst = g.radio && !prev.length && g.options[0].price === 0 && g.options.some(function (o) { return o.price; });
       var wide = g.options.some(function (o) { return o.label.length > 15; });
-      var hint = g.radio ? 'Obligatoire' : g.min === g.max ? 'Choisissez ' + g.min : g.min ? 'Au moins ' + g.min : 'Facultatif' + (g.max < g.options.length ? ', ' + g.max + ' max.' : '');
+      var hint = g.radio ? (defaultFirst ? 'Facultatif' : 'Obligatoire') : g.min === g.max ? 'Choisissez ' + g.min : g.min ? 'Au moins ' + g.min : 'Facultatif' + (g.max < g.options.length ? ', ' + g.max + ' max.' : '');
       return '<fieldset class="group" data-g="' + gi + '"><legend>' + esc(g.label) + ' <span class="group__hint" data-hint>' + hint + '</span></legend><div class="opts' + (wide ? ' opts--wide' : '') + '">' +
         g.options.map(function (o, oi) {
           var on = prev.indexOf(oi) > -1 || (defaultFirst && oi === 0);
