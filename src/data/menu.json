@@ -483,7 +483,7 @@
             }
           ],
           "desc": "Viande kebab marinée",
-          "img": "assiette",
+          "img": "assiette-kebab",
           "badge": "Thé offert",
           "groups": [
             "boissonAssiette"
@@ -500,7 +500,7 @@
             }
           ],
           "desc": "Kefta traditionnelle",
-          "img": "assiette",
+          "img": "assiette-kefta",
           "badge": "Thé offert",
           "groups": [
             "boissonAssiette"
@@ -517,7 +517,7 @@
             }
           ],
           "desc": "Merguez grillées",
-          "img": "assiette",
+          "img": "assiette-merguez",
           "badge": "Thé offert",
           "groups": [
             "boissonAssiette"
@@ -534,7 +534,7 @@
             }
           ],
           "desc": "Brochettes de poulet",
-          "img": "assiette",
+          "img": "assiette-brochettes",
           "badge": "Thé offert",
           "groups": [
             "boissonAssiette"
@@ -551,7 +551,7 @@
             }
           ],
           "desc": "Côtelettes d'agneau grillées",
-          "img": "assiette",
+          "img": "assiette-cotelettes",
           "badge": "Thé offert",
           "groups": [
             "boissonAssiette"
@@ -568,7 +568,7 @@
             }
           ],
           "desc": "Kefta traditionnelle, oignons, sauce yaourt",
-          "img": "assiette",
+          "img": "assiette-adana",
           "badge": "Thé offert",
           "groups": [
             "boissonAssiette"
