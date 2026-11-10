@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Casa Grill Vayres – Kebab, burgers, tacos &amp; grillades halal</title>
+<meta name="description" content="Casa Grill &amp; Street Food à Vayres (33870), près de Libourne : kebab, burgers, tacos, crousty et assiettes grillées halal. Sur place, à emporter, commande par WhatsApp au 07 54 76 27 24.">
+<link rel="canonical" href="https://casagrill-vayres.fr/">
+<meta name="theme-color" content="#120d09">
+<meta name="color-scheme" content="dark light">
+<meta property="og:type" content="restaurant">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Casa Grill Vayres">
+<meta property="og:title" content="Casa Grill Vayres – Kebab, burgers, tacos &amp; grillades halal">
+<meta property="og:description" content="Grillades et street food halal à Vayres. Sur place &amp; à emporter. Commandez en ligne via WhatsApp.">
+<meta property="og:url" content="https://casagrill-vayres.fr/">
+<meta property="og:image" content="https://casagrill-vayres.fr/img/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Logo Casa Grill &amp; Street Food, Vayres">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Casa Grill Vayres – Kebab, burgers, tacos &amp; grillades halal">
+<meta name="twitter:description" content="Grillades et street food halal à Vayres. Sur place &amp; à emporter.">
+<meta name="twitter:image" content="https://casagrill-vayres.fr/img/og-image.jpg">
+<link rel="icon" href="img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preload" href="fonts/rakkas-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/figtree-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="image" href="img/logo-hero-sm.avif" type="image/avif" imagesrcset="img/logo-hero-sm.avif 320w, img/logo-hero.avif 640w" imagesizes="(min-width: 900px) 420px, min(72vw, 330px)" fetchpriority="high">
+<link rel="preload" href="data/menu.json" as="fetch" crossorigin>
+<link rel="preload" href="data/config.json" as="fetch" crossorigin>
+<script>
+  // Thème : sombre par défaut, choix mémorisé.
+  try { var t = localStorage.getItem('cg-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+<style>/*INLINE_CSS*/</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "@id": "https://casagrill-vayres.fr/#restaurant",
+  "name": "Casa Grill & Street Food",
+  "alternateName": "Casa Grill Vayres",
+  "description": "Restaurant halal de grillades et street food à Vayres : kebab, burgers, tacos, crousty, assiettes grillées. Sur place et à emporter.",
+  "url": "https://casagrill-vayres.fr/",
+  "image": ["https://casagrill-vayres.fr/img/og-image.jpg"],
+  "logo": "https://casagrill-vayres.fr/img/icon-512.png",
+  "telephone": "+33754762724",
+  "email": "casagrill33@gmail.com",
+  "priceRange": "€",
+  "servesCuisine": ["Halal", "Kebab", "Burgers", "Tacos", "Grillades", "Street food", "Orientale"],
+  "acceptsReservations": false,
+  "hasMenu": "https://casagrill-vayres.fr/#carte",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "1 avenue de Libourne",
+    "addressLocality": "Vayres",
+    "postalCode": "33870",
+    "addressRegion": "Nouvelle-Aquitaine",
+    "addressCountry": "FR"
+  },
+  "geo": { "@type": "GeoCoordinates", "latitude": 44.8986, "longitude": -0.3168 },
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], "opens": "11:00", "closes": "15:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], "opens": "17:00", "closes": "22:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "16:00", "closes": "21:00" }
+  ],
+  "amenityFeature": [
+    { "@type": "LocationFeatureSpecification", "name": "Halal", "value": true },
+    { "@type": "LocationFeatureSpecification", "name": "Sur place", "value": true },
+    { "@type": "LocationFeatureSpecification", "name": "À emporter", "value": true }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#carte">Aller à la carte</a>
+
+<div class="marquee" id="marquee" role="region" aria-label="Annonce : spéciale ouverture" hidden>
+  <p class="sr-only" id="marquee-sr"></p>
+  <div class="marquee__viewport" aria-hidden="true">
+    <div class="marquee__track" id="marquee-track"></div>
+  </div>
+  <button class="marquee__close" id="marquee-close" type="button" aria-label="Fermer l'annonce">
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+  </button>
+</div>
+
+<header class="site-header" id="top">
+  <div class="wrap site-header__inner">
+    <a class="brand" href="#top" aria-label="Casa Grill, retour en haut">
+      <img src="img/logo-64.webp" srcset="img/logo-64.webp 1x, img/logo-128.webp 2x" width="40" height="40" alt="">
+      <span class="brand__name">Casa Grill</span>
+    </a>
+    <p class="status" id="status" aria-live="polite"><span class="status__dot" aria-hidden="true"></span><span class="status__text">Horaires…</span></p>
+    <button class="icon-btn" id="theme-toggle" type="button" aria-label="Passer en mode clair" aria-pressed="false">
+      <svg class="i-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" fill="currentColor"/></svg>
+    </button>
+    <a class="btn btn--call btn--sm" href="tel:+33754762724" aria-label="Appeler le restaurant">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>
+      <span>Appeler</span>
+    </a>
+  </div>
+</header>
+
+<main>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap hero__inner">
+      <picture class="hero__logo">
+        <source type="image/avif" srcset="img/logo-hero-sm.avif 320w, img/logo-hero.avif 640w" sizes="(min-width: 900px) 420px, min(72vw, 330px)">
+        <img src="img/logo-hero-sm.webp" srcset="img/logo-hero-sm.webp 320w, img/logo-hero.webp 640w" sizes="(min-width: 900px) 420px, min(72vw, 330px)" width="640" height="450" alt="Casa Grill &amp; Street Food" fetchpriority="high" decoding="async">
+      </picture>
+      <div class="hero__text">
+        <div class="hero__news" id="hero-news" hidden>
+          <span class="pill pill--new" id="hero-badge">Nouveau à Vayres</span>
+          <p class="hero__news-msg" id="hero-news-msg"></p>
+          <p class="countdown" id="countdown" hidden>
+            <span class="countdown__label" id="countdown-label">Grande ouverture dans</span>
+            <span class="countdown__units" role="timer" aria-live="off">
+              <span><b id="cd-d">0</b> j</span><span><b id="cd-h">0</b> h</span><span><b id="cd-m">0</b> min</span><span><b id="cd-s">0</b> s</span>
+            </span>
+          </p>
+        </div>
+        <h1 id="hero-title">Grillades et street food <span class="nowrap">à Vayres</span></h1>
+        <ul class="badges" aria-label="Points forts">
+          <li class="pill pill--halal"><img src="img/halal-sm.webp" width="22" height="22" alt="" loading="lazy">Halal</li>
+          <li class="pill">Sur place</li>
+          <li class="pill">À emporter</li>
+        </ul>
+        <div class="hero__ctas">
+          <a class="btn btn--primary" href="#carte">Commander</a>
+          <a class="btn btn--ghost" href="tel:+33754762724">Appeler</a>
+          <a class="btn btn--ghost" href="https://www.google.com/maps/dir/?api=1&amp;destination=Casa+Grill+1+avenue+de+Libourne+33870+Vayres" target="_blank" rel="noopener">Itinéraire</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="menu-section" id="carte" aria-labelledby="carte-title">
+    <div class="wrap menu-head">
+      <h2 id="carte-title" class="section-title">La carte</h2>
+      <p class="menu-head__sub">Touchez <b>Seul</b> ou <b>Menu</b> pour ajouter au panier, puis envoyez votre commande par WhatsApp.</p>
+      <button class="btn btn--ghost btn--sm" type="button" id="open-posters">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" d="M4 5h16v14H4zM4 15l4.5-4.5 4 4 2.5-2.5L20 17"/></svg>
+        Voir la carte en images
+      </button>
+    </div>
+    <nav class="tabs" id="tabs" aria-label="Catégories de la carte">
+      <div class="tabs__scroller" id="tabs-scroller"></div>
+    </nav>
+    <div class="wrap" id="menu" aria-live="off">
+      <noscript><p class="notice">Activez JavaScript pour commander en ligne, ou appelez le <a href="tel:+33754762724">07 54 76 27 24</a>. Carte en images : <a href="img/affiche-carte-street-food.webp">street food</a>, <a href="img/affiche-carte-assiettes.webp">assiettes &amp; desserts</a>.</p></noscript>
+    </div>
+    <div class="wrap">
+      <p class="fine">Informations allergènes disponibles au restaurant. Photos non contractuelles.</p>
+    </div>
+  </section>
+
+  <section class="info-section" id="horaires" aria-labelledby="horaires-title">
+    <div class="wrap info-grid">
+      <div class="card">
+        <h2 id="horaires-title" class="section-title">Horaires</h2>
+        <table class="hours" id="hours-table">
+          <caption class="sr-only">Horaires d'ouverture (heure de Paris)</caption>
+          <tbody>
+            <tr data-day="mon"><th scope="row">Lundi</th><td>11h–15h · 17h–22h</td></tr>
+            <tr data-day="tue"><th scope="row">Mardi</th><td>11h–15h · 17h–22h</td></tr>
+            <tr data-day="wed"><th scope="row">Mercredi</th><td>11h–15h · 17h–22h</td></tr>
+            <tr data-day="thu"><th scope="row">Jeudi</th><td>11h–15h · 17h–22h</td></tr>
+            <tr data-day="fri"><th scope="row">Vendredi</th><td>11h–15h · 17h–22h</td></tr>
+            <tr data-day="sat"><th scope="row">Samedi</th><td>11h–15h · 17h–22h</td></tr>
+            <tr data-day="sun"><th scope="row">Dimanche</th><td>16h–21h</td></tr>
+          </tbody>
+        </table>
+        <p class="closures" id="closures" hidden></p>
+      </div>
+
+      <div class="card" id="acces" aria-labelledby="acces-title">
+        <h2 id="acces-title" class="section-title">Accès</h2>
+        <address class="addr">
+          <strong>1 avenue de Libourne, 33870 Vayres</strong>
+          <span>Face à la pharmacie, à côté de l'Ours Bleu</span>
+        </address>
+        <div class="map" id="map">
+          <button type="button" class="map__load" id="map-load">
+            <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            <span>Afficher la carte Google Maps</span>
+          </button>
+        </div>
+        <div class="row-btns">
+          <a class="btn btn--primary" href="https://www.google.com/maps/dir/?api=1&amp;destination=Casa+Grill+1+avenue+de+Libourne+33870+Vayres" target="_blank" rel="noopener">Itinéraire</a>
+          <a class="btn btn--ghost" href="tel:+33754762724">07 54 76 27 24</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div>
+      <p class="footer-brand">Casa Grill &amp; Street Food</p>
+      <p>1 avenue de Libourne, 33870 Vayres<br>Face à la pharmacie, à côté de l'Ours Bleu</p>
+      <p><a href="tel:+33754762724">07 54 76 27 24</a><br><a href="mailto:casagrill33@gmail.com">casagrill33@gmail.com</a></p>
+    </div>
+    <div id="footer-delivery" hidden>
+      <p class="footer-h">Livraison</p>
+      <div class="row-btns" id="delivery-links"></div>
+    </div>
+    <div id="footer-social" hidden>
+      <p class="footer-h">Suivez-nous</p>
+      <div class="row-btns" id="social-links"></div>
+    </div>
+    <div>
+      <p class="footer-h">Infos</p>
+      <p><a href="mentions-legales.html">Mentions légales &amp; confidentialité</a></p>
+      <p class="fine">Halal · Sur place &amp; à emporter · Paiement au restaurant.<br>Informations allergènes disponibles au restaurant.</p>
+    </div>
+  </div>
+  <p class="wrap copyright">© <span id="year">2026</span> Casa Grill Vayres</p>
+</footer>
+
+<!-- Barre panier -->
+<div class="cartbar" id="cartbar" hidden>
+  <button class="cartbar__btn" type="button" id="open-cart" aria-haspopup="dialog">
+    <span class="cartbar__count" id="cart-count">0</span>
+    <span class="cartbar__label"><span class="xs-hide">Voir ma commande</span><span class="xs-show">Commande</span></span>
+    <span class="cartbar__total" id="cart-total">0,00 €</span>
+  </button>
+</div>
+
+<!-- Fenêtre de choix (boisson, parfum…) -->
+<dialog class="sheet" id="choice-sheet" aria-labelledby="choice-title">
+  <form method="dialog" class="sheet__inner" id="choice-form">
+    <div class="sheet__head">
+      <h2 id="choice-title">Choix</h2>
+      <button class="icon-btn" type="button" data-close aria-label="Fermer"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="sheet__body" id="choice-body"></div>
+    <div class="sheet__foot">
+      <button class="btn btn--primary btn--block" type="submit" id="choice-submit">Ajouter</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Tiroir commande -->
+<dialog class="sheet sheet--tall" id="cart-sheet" aria-labelledby="cart-title">
+  <div class="sheet__inner">
+    <div class="sheet__head">
+      <h2 id="cart-title">Ma commande</h2>
+      <button class="icon-btn" type="button" data-close aria-label="Fermer"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="sheet__body" id="cart-body">
+      <ul class="lines" id="cart-lines"></ul>
+      <p class="empty" id="cart-empty" hidden>Votre panier est vide.</p>
+      <form id="order-form" class="order-form" novalidate>
+        <fieldset class="seg">
+          <legend>Mode</legend>
+          <label><input type="radio" name="mode" value="À emporter" checked><span>À emporter</span></label>
+          <label><input type="radio" name="mode" value="Sur place"><span>Sur place</span></label>
+        </fieldset>
+        <div class="field">
+          <label for="f-name">Prénom</label>
+          <input id="f-name" name="name" type="text" autocomplete="given-name" required maxlength="40" aria-describedby="e-name">
+          <p class="err" id="e-name" hidden>Indiquez votre prénom.</p>
+        </div>
+        <div class="field">
+          <label for="f-phone">Téléphone</label>
+          <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="06 12 34 56 78" aria-describedby="e-phone">
+          <p class="err" id="e-phone" hidden>Numéro français attendu : 06…, 07… ou +33…</p>
+        </div>
+        <div class="field">
+          <label for="f-time">Heure souhaitée</label>
+          <select id="f-time" name="time" required aria-describedby="time-hint"></select>
+          <p class="hint" id="time-hint"></p>
+          <p class="warn" id="student-warn" hidden>La formule étudiant est valable du lundi au vendredi, de 11h à 15h. Choisissez un créneau dans cette plage, ou retirez-la.</p>
+        </div>
+        <div class="field">
+          <label for="f-notes">Précisions <span class="muted">(sauces, sans oignons, viandes du tacos…)</span></label>
+          <textarea id="f-notes" name="notes" rows="3" maxlength="500"></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="sheet__foot">
+      <p class="total-line"><span>Total</span><strong id="sheet-total">0,00 €</strong></p>
+      <a class="btn btn--wa btn--block" id="wa-link" href="https://wa.me/33754762724" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>
+        Envoyer sur WhatsApp
+      </a>
+      <div class="row-btns row-btns--split">
+        <a class="btn btn--ghost" href="tel:+33754762724">Appeler le restaurant</a>
+        <button class="btn btn--ghost" type="button" id="copy-order">Copier la commande</button>
+      </div>
+      <p class="fine center">Paiement au restaurant. Commande confirmée par le restaurant après réception.</p>
+    </div>
+  </div>
+</dialog>
+
+<!-- Confirmation -->
+<dialog class="sheet" id="sent-sheet" aria-labelledby="sent-title">
+  <div class="sheet__inner">
+    <div class="sheet__body center">
+      <p class="sent-icon" aria-hidden="true">✓</p>
+      <h2 id="sent-title">Commande prête dans WhatsApp</h2>
+      <p>Appuyez sur <b>Envoyer</b> dans WhatsApp. Le restaurant vous confirme la commande dès réception.</p>
+      <p class="muted">Votre panier a été vidé. WhatsApp ne s'est pas ouvert ?</p>
+    </div>
+    <div class="sheet__foot">
+      <button class="btn btn--ghost btn--block" type="button" id="restore-cart">Revenir à ma commande</button>
+      <button class="btn btn--primary btn--block" type="button" data-close>Terminé</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Affiches -->
+<dialog class="lightbox" id="posters" aria-labelledby="posters-title">
+  <div class="lightbox__head">
+    <h2 id="posters-title">La carte en images</h2>
+    <p class="muted lightbox__hint">4 affiches · glissez, touchez pour zoomer</p>
+    <button class="icon-btn" type="button" data-close aria-label="Fermer"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+  </div>
+  <div class="lightbox__track" id="posters-track">
+    <figure><button type="button" class="zoomable" aria-label="Zoomer : burgers, sandwichs, tacos, crousty, formules"><img data-src="img/affiche-carte-street-food.webp" width="1600" height="1618" alt="Affiche : burgers, sandwichs, tacos, crousty, prix étudiant et menu enfant"></button></figure>
+    <figure><button type="button" class="zoomable" aria-label="Zoomer : assiettes, desserts, boissons"><img data-src="img/affiche-carte-assiettes.webp" width="1380" height="2000" alt="Affiche : assiettes et grillades, desserts maison, boissons"></button></figure>
+    <figure><button type="button" class="zoomable" aria-label="Zoomer : burgers et assiettes"><img data-src="img/affiche-burgers-assiettes.webp" width="1600" height="1132" alt="Affiche : burgers, sandwichs, tacos, crousty, assiettes et grillades"></button></figure>
+    <figure><button type="button" class="zoomable" aria-label="Zoomer : desserts, boissons, infos"><img data-src="img/affiche-desserts-infos.webp" width="1600" height="1132" alt="Affiche : formules, desserts, boissons, horaires et contact"></button></figure>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+
+<script src="js/app.js" defer></script>
+</body>
+</html>

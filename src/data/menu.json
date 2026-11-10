@@ -1,0 +1,266 @@
+{
+  "_aide": "Toutes les données du restaurant. Prix en euros (nombre, point décimal). Pour changer un prix, modifiez seulement la valeur 'price'. Horaires au format HH:MM, heure de Paris. Jours : mon, tue, wed, thu, fri, sat, sun.",
+  "restaurant": {
+    "name": "Casa Grill & Street Food",
+    "shortName": "Casa Grill",
+    "tagline": "Grillades et street food à Vayres",
+    "address": "1 avenue de Libourne",
+    "postalCode": "33870",
+    "city": "Vayres",
+    "landmark": "Face à la pharmacie, à côté de l'Ours Bleu",
+    "phone": "07 54 76 27 24",
+    "phoneIntl": "+33754762724",
+    "whatsapp": "33754762724",
+    "email": "casagrill33@gmail.com",
+    "timezone": "Europe/Paris",
+    "minLeadMinutes": 20,
+    "slotStepMinutes": 15
+  },
+  "hours": {
+    "mon": [["11:00", "15:00"], ["17:00", "22:00"]],
+    "tue": [["11:00", "15:00"], ["17:00", "22:00"]],
+    "wed": [["11:00", "15:00"], ["17:00", "22:00"]],
+    "thu": [["11:00", "15:00"], ["17:00", "22:00"]],
+    "fri": [["11:00", "15:00"], ["17:00", "22:00"]],
+    "sat": [["11:00", "15:00"], ["17:00", "22:00"]],
+    "sun": [["16:00", "21:00"]]
+  },
+  "choiceGroups": {
+    "boisson": {
+      "label": "Votre boisson",
+      "options": ["Coca-Cola", "Ice Tea", "Oasis", "Coca Cherry", "Fanta", "Eau"]
+    },
+    "parfumTiramisu": {
+      "label": "Parfum du tiramisu",
+      "options": ["Oreo", "Kinder", "Spéculoos", "Granola"]
+    }
+  },
+  "categories": [
+    {
+      "id": "burgers",
+      "name": "Burgers",
+      "note": "Menu = burger + frites + boisson",
+      "items": [
+        {
+          "id": "cheese-burger",
+          "name": "Cheese Burger",
+          "img": "cheese-burger",
+          "variants": [
+            { "id": "seul", "label": "Seul", "price": 5.5 },
+            { "id": "menu", "label": "Menu", "price": 7.5, "choices": ["boisson"] }
+          ]
+        },
+        {
+          "id": "double-cheese",
+          "name": "Double Cheese",
+          "img": "double-cheese",
+          "variants": [
+            { "id": "seul", "label": "Seul", "price": 7.5 },
+            { "id": "menu", "label": "Menu", "price": 9.5, "choices": ["boisson"] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sandwichs",
+      "name": "Sandwichs",
+      "note": "Menu = sandwich + frites + boisson",
+      "items": [
+        {
+          "id": "sandwich-kebab",
+          "name": "Kebab",
+          "img": "sandwich",
+          "variants": [
+            { "id": "seul", "label": "Seul", "price": 8 },
+            { "id": "menu", "label": "Menu", "price": 9, "choices": ["boisson"] }
+          ]
+        },
+        {
+          "id": "sandwich-escalope",
+          "name": "Escalope poulet fromage",
+          "img": "sandwich-escalope",
+          "variants": [
+            { "id": "seul", "label": "Seul", "price": 8 },
+            { "id": "menu", "label": "Menu", "price": 9, "choices": ["boisson"] }
+          ]
+        },
+        {
+          "id": "sandwich-kefta",
+          "name": "Kefta",
+          "img": "sandwich-kefta",
+          "variants": [
+            { "id": "seul", "label": "Seul", "price": 8 },
+            { "id": "menu", "label": "Menu", "price": 9, "choices": ["boisson"] }
+          ]
+        },
+        {
+          "id": "sandwich-brochettes",
+          "name": "Brochettes",
+          "img": "sandwich-brochettes",
+          "variants": [
+            { "id": "seul", "label": "Seul", "price": 8 },
+            { "id": "menu", "label": "Menu", "price": 9, "choices": ["boisson"] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tacos",
+      "name": "Tacos",
+      "note": "Menu = tacos + frites + boisson. Viandes au choix : kebab, merguez, cordon bleu, tenders (+1,50 €), steak, nuggets. Suppléments fromage : cheddar, Boursin, Kiri (+1,50 € chacun). Indiquez vos viandes dans « Précisions » ; les suppléments sont réglés au restaurant.",
+      "items": [
+        {
+          "id": "tacos-1",
+          "name": "Tacos 1 viande",
+          "img": "tacos",
+          "askDetails": "Précisez votre viande",
+          "variants": [
+            { "id": "seul", "label": "Seul", "price": 8 },
+            { "id": "menu", "label": "Menu", "price": 9, "choices": ["boisson"] }
+          ]
+        },
+        {
+          "id": "tacos-2",
+          "name": "Tacos 2 viandes",
+          "img": "tacos",
+          "askDetails": "Précisez vos 2 viandes",
+          "variants": [
+            { "id": "seul", "label": "Seul", "price": 10 },
+            { "id": "menu", "label": "Menu", "price": 11, "choices": ["boisson"] }
+          ]
+        },
+        {
+          "id": "tacos-3",
+          "name": "Tacos 3 viandes",
+          "img": "tacos",
+          "askDetails": "Précisez vos 3 viandes",
+          "variants": [
+            { "id": "seul", "label": "Seul", "price": 12 },
+            { "id": "menu", "label": "Menu", "price": 13, "choices": ["boisson"] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "crousty",
+      "name": "Crousty",
+      "note": "Menu = crousty + boisson",
+      "items": [
+        {
+          "id": "crousty-mini",
+          "name": "Crousty Mini",
+          "img": "crousty-mini",
+          "variants": [
+            { "id": "seul", "label": "Seul", "price": 4 },
+            { "id": "menu", "label": "Menu", "price": 5, "choices": ["boisson"] }
+          ]
+        },
+        {
+          "id": "crousty-classique",
+          "name": "Crousty Classique",
+          "img": "crousty",
+          "variants": [
+            { "id": "seul", "label": "Seul", "price": 7 },
+            { "id": "menu", "label": "Menu", "price": 8, "choices": ["boisson"] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "assiettes",
+      "name": "Assiettes & grillades",
+      "note": "Accompagnements au choix : frites, boulgour et crudités. Thé offert pour toute assiette achetée. Couscous et tajine uniquement sur commande (appelez-nous).",
+      "banner": "assiette",
+      "items": [
+        { "id": "assiette-kebab", "name": "Assiette Kebab", "desc": "Viande kebab marinée", "variants": [{ "id": "unique", "label": "Ajouter", "price": 14 }] },
+        { "id": "assiette-kefta", "name": "Assiette Kefta", "desc": "Kefta traditionnelle", "variants": [{ "id": "unique", "label": "Ajouter", "price": 14 }] },
+        { "id": "assiette-merguez", "name": "Assiette Merguez", "desc": "Merguez grillées", "variants": [{ "id": "unique", "label": "Ajouter", "price": 14 }] },
+        { "id": "assiette-brochettes", "name": "Assiette Brochettes", "desc": "Brochettes de poulet", "variants": [{ "id": "unique", "label": "Ajouter", "price": 14 }] },
+        { "id": "assiette-cotelettes", "name": "Assiette Côtelettes d'agneau", "desc": "Côtelettes d'agneau grillées", "variants": [{ "id": "unique", "label": "Ajouter", "price": 15 }] },
+        { "id": "assiette-adana", "name": "Assiette Adana Kebab", "desc": "Kefta traditionnelle, oignons, sauce yaourt", "variants": [{ "id": "unique", "label": "Ajouter", "price": 15 }] },
+        { "id": "assiette-mixte", "name": "Assiette Mixte", "desc": "Trois viandes au choix", "askDetails": "Précisez vos 3 viandes", "variants": [{ "id": "unique", "label": "Ajouter", "price": 18 }] }
+      ]
+    },
+    {
+      "id": "formules",
+      "name": "Formules",
+      "items": [
+        {
+          "id": "formule-etudiant",
+          "name": "Prix étudiant",
+          "desc": "Kebab + frites + boisson, ou Crousty + boisson. Du lundi au vendredi, 11h–15h, sur présentation de la carte étudiante.",
+          "img": "etudiant",
+          "student": true,
+          "variants": [
+            {
+              "id": "unique", "label": "Choisir", "price": 6,
+              "choices": [
+                { "id": "formule", "label": "Votre formule", "options": ["Kebab + frites + boisson", "Crousty + boisson"] },
+                "boisson",
+                { "id": "dessert", "label": "Petit tiramisu (+1,50 €)", "options": [
+                  { "label": "Sans tiramisu", "price": 0 },
+                  { "label": "Tiramisu Oreo", "price": 1.5 },
+                  { "label": "Tiramisu Kinder", "price": 1.5 },
+                  { "label": "Tiramisu Spéculoos", "price": 1.5 },
+                  { "label": "Tiramisu Granola", "price": 1.5 }
+                ] }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "menu-enfant",
+          "name": "Menu enfant",
+          "desc": "Hamburger ou nuggets + frites + Capri-Sun ou eau 33 cl + compote",
+          "img": "enfant",
+          "variants": [
+            {
+              "id": "unique", "label": "Choisir", "price": 6,
+              "choices": [
+                { "id": "plat", "label": "Le plat", "options": ["Hamburger", "Nuggets"] },
+                { "id": "boissonEnfant", "label": "La boisson", "options": ["Capri-Sun", "Eau 33 cl"] }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "desserts",
+      "name": "Desserts",
+      "note": "Faits maison",
+      "items": [
+        {
+          "id": "tiramisu",
+          "name": "Tiramisu maison",
+          "desc": "Oreo, Kinder, Spéculoos ou Granola",
+          "img": "tiramisu",
+          "variants": [
+            { "id": "petit", "label": "Petit", "price": 2, "choices": ["parfumTiramisu"] },
+            { "id": "grand", "label": "Grand", "price": 4, "choices": ["parfumTiramisu"] }
+          ]
+        },
+        {
+          "id": "tarte-daim",
+          "name": "Part de tarte au Daim",
+          "img": "tarte",
+          "variants": [{ "id": "unique", "label": "Ajouter", "price": 3.5 }]
+        }
+      ]
+    },
+    {
+      "id": "boissons",
+      "name": "Boissons",
+      "banner": "boissons",
+      "items": [
+        { "id": "coca", "name": "Coca-Cola", "desc": "Canette 33 cl", "variants": [{ "id": "unique", "label": "Ajouter", "price": 1.5 }] },
+        { "id": "icetea", "name": "Ice Tea", "desc": "Canette 33 cl", "variants": [{ "id": "unique", "label": "Ajouter", "price": 1.5 }] },
+        { "id": "oasis", "name": "Oasis", "desc": "Canette 33 cl", "variants": [{ "id": "unique", "label": "Ajouter", "price": 1.5 }] },
+        { "id": "coca-cherry", "name": "Coca Cherry", "desc": "Canette 33 cl", "variants": [{ "id": "unique", "label": "Ajouter", "price": 1.5 }] },
+        { "id": "fanta", "name": "Fanta", "desc": "Canette 33 cl", "variants": [{ "id": "unique", "label": "Ajouter", "price": 1.5 }] },
+        { "id": "eau", "name": "Eau", "desc": "Bouteille", "variants": [{ "id": "unique", "label": "Ajouter", "price": 1.5 }] },
+        { "id": "cafe", "name": "Café", "img": "cafe", "variants": [{ "id": "unique", "label": "Ajouter", "price": 1.3 }] }
+      ]
+    }
+  ]
+}

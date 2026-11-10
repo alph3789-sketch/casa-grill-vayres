@@ -1,0 +1,16 @@
+{
+  "name": "Casa Grill & Street Food – Vayres",
+  "short_name": "Casa Grill",
+  "description": "Grillades et street food halal à Vayres. Commande par WhatsApp.",
+  "lang": "fr",
+  "start_url": "./?utm_source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#120d09",
+  "theme_color": "#120d09",
+  "icons": [
+    { "src": "img/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "img/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "img/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
