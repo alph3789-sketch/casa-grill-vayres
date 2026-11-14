@@ -38,17 +38,25 @@ python3 -m http.server 8080 --directory dist
 ```
 Ouvrez ensuite http://localhost:8080. Pour simuler une heure (heure de Paris) : `http://localhost:8080/?simnow=2026-11-16T15:30`.
 
-## Mise en ligne (Netlify, gratuit)
-1. Créez un dépôt GitHub avec ce dossier, puis « Add new site → Import from Git » sur Netlify. `netlify.toml` règle déjà la commande (`node build.mjs`) et le dossier (`dist`).
-2. Branchez le domaine (par ex. `casagrill-vayres.fr`). Si vous en choisissez un autre, remplacez `casagrill-vayres.fr` dans `src/index.html`, `src/mentions-legales.html`, `build.mjs` et `config.json`.
-3. Créez ou réclamez la fiche **Google Business Profile** et mettez l'adresse du site dans le champ « Site web ». C'est le plus important pour le référencement local.
-4. Imprimez `qr-flyer.png` sur les affiches. Il pointe vers `?utm_source=flyer`, ce qui permet de compter ces visites dans Plausible ou Umami.
+## Mise en ligne (GitHub Pages)
+Le site est publié à l'adresse **https://alph3789-sketch.github.io/casa-grill-vayres/**.
+- Branche `main` : le projet (sources). Branche `gh-pages` : le site construit (contenu de `dist/`).
+- Réglage GitHub : Settings → Pages → Deploy from a branch → `gh-pages` / `(root)`.
+- Pour mettre à jour : modifier `src/`, lancer `node build.mjs`, puis publier le contenu de `dist/` sur `gh-pages`.
 
-## À compléter avant la mise en ligne
-- [ ] `src/mentions-legales.html` : raison sociale, SIRET, directeur de la publication, hébergeur (surlignés).
-- [ ] `config.json` : vraies dates d'ouverture (celles en place sont des exemples : ouverture le 09/11/2026, fin du bandeau le 14/12/2026 — à ajuster).
-- [ ] `config.json` : liens Uber Eats, Deliveroo et réseaux sociaux.
-- [ ] Coordonnées GPS du JSON-LD (`geo` dans `src/index.html`) : elles sont approximatives, à remplacer par celles de la fiche Google.
+### Brancher un nom de domaine plus tard
+Changez la constante `SITE` en haut de `build.mjs` (une seule ligne), relancez le build, puis régénérez le QR code.
+
+### Référencement
+Créez ou réclamez la fiche **Google Business Profile** et mettez l'adresse du site dans le champ « Site web ». C'est le plus important pour le référencement local. Imprimez `qr-flyer.png` sur les affiches : il pointe vers `?utm_source=flyer`.
+
+## À compléter (vous seul avez ces informations)
+- [ ] `src/mentions-legales.html` : raison sociale, SIRET, directeur de la publication (surlignés).
+- [ ] `src/data/config.json` → `links` : Uber Eats, Deliveroo, Facebook, Instagram, TikTok (boutons masqués tant que c'est vide).
+- [ ] `src/data/config.json` → `banner.endDate` : date de fin du bandeau d'ouverture (aujourd'hui 14/12/2026).
+- [ ] Coordonnées GPS du JSON-LD (`geo` dans `src/index.html`) : approximatives, à remplacer par celles de la fiche Google.
+- [ ] Assiette mixte : vérifier la liste des viandes proposées dans `menu.json`.
+- [ ] Photos : elles viennent des affiches (basse définition). Pour les remplacer, déposez des images du même nom dans `src/img/`.
 
 ## Structure
 ```

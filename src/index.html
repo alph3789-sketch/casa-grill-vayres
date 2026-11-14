@@ -34,6 +34,7 @@
   // Thème : sombre par défaut, choix mémorisé.
   try { var t = localStorage.getItem('cg-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}
 </script>
+<script>/*BANNER_BOOT*/</script>
 <style>/*INLINE_CSS*/</style>
 <script type="application/ld+json">
 {
@@ -134,6 +135,7 @@
   <section class="menu-section" id="carte" aria-label="La carte">
     <nav class="tabs" id="tabs" aria-label="Catégories de la carte">
       <div class="tabs__scroller" id="tabs-scroller" role="tablist"></div>
+      <button class="tabs__more" id="tabs-more" type="button" tabindex="-1" aria-hidden="true">›</button>
     </nav>
     <div class="wrap panel" id="panel" role="tabpanel" aria-labelledby="">
       <div class="panel__head">
