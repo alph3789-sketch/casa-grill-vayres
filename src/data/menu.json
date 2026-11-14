@@ -865,5 +865,18 @@
       ],
       "compact": true
     }
+  ],
+  "hdImages": [
+    "assiette",
+    "assiette-adana",
+    "assiette-brochettes",
+    "assiette-cotelettes",
+    "assiette-kefta",
+    "double-cheese",
+    "etudiant",
+    "sandwich",
+    "tacos",
+    "tacos2",
+    "tacos3"
   ]
 }

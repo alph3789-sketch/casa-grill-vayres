@@ -242,8 +242,11 @@
   function pic(name, w, h, cls, sizes, eager) {
     var sm = 'img/' + name + '-sm', lg = 'img/' + name;
     var sz = ' sizes="' + (sizes || '50vw') + '"';
-    return '<picture class="' + cls + '"><source type="image/avif" srcset="' + sm + '.avif 320w, ' + lg + '.avif 640w"' + sz + '>' +
-      '<img src="' + sm + '.webp" srcset="' + sm + '.webp 320w, ' + lg + '.webp 640w"' + sz + ' width="' + w + '" height="' + h + '" alt=""' + (eager ? '' : ' loading="lazy"') + ' decoding="async"></picture>';
+    // Photos haute définition (liste « hdImages » de menu.json) : une 3e taille en 1280 px.
+    var hd = (DATA.hdImages || []).indexOf(name) > -1;
+    var set = function (ext) { return sm + ext + ' 320w, ' + lg + ext + ' 640w' + (hd ? ', ' + lg + '-lg' + ext + ' 1280w' : ''); };
+    return '<picture class="' + cls + '"><source type="image/avif" srcset="' + set('.avif') + '"' + sz + '>' +
+      '<img src="' + sm + '.webp" srcset="' + set('.webp') + '"' + sz + ' width="' + w + '" height="' + h + '" alt=""' + (eager ? '' : ' loading="lazy"') + ' decoding="async"></picture>';
   }
   // Produit sans choix : le « + » l'ajoute directement au panier.
   function isSimple(it) { return !it.onRequest && it.variants.length === 1 && !(it.groups || []).length && !(it.variants[0].groups || []).length; }
