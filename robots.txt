@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://casagrill-vayres.fr/sitemap.xml
+Sitemap: https://alph3789-sketch.github.io/casa-grill-vayres/sitemap.xml

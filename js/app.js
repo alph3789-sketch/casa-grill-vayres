@@ -218,6 +218,7 @@
     if (!bannerReady) return;
     var active = bannerActive(now);
     var closedAt = +store.get(BANNER_KEY) || 0;
+    document.documentElement.classList.remove('bn', 'hn'); // l'attribut hidden reprend la main
     $('#marquee').hidden = !active || (Date.now() - closedAt < 864e5);
     $('#hero-news').hidden = !active;
   }
@@ -244,6 +245,14 @@
     return '<picture class="' + cls + '"><source type="image/avif" srcset="' + sm + '.avif 320w, ' + lg + '.avif 640w"' + sz + '>' +
       '<img src="' + sm + '.webp" srcset="' + sm + '.webp 320w, ' + lg + '.webp 640w"' + sz + ' width="' + w + '" height="' + h + '" alt=""' + (eager ? '' : ' loading="lazy"') + ' decoding="async"></picture>';
   }
+  // Produit sans choix : le « + » l'ajoute directement au panier.
+  function isSimple(it) { return !it.onRequest && it.variants.length === 1 && !(it.groups || []).length && !(it.variants[0].groups || []).length; }
+  function updateTileCounts() {
+    $$('#menu .tile').forEach(function (t) {
+      var n = cart.reduce(function (a, l) { return a + (l.item === t.dataset.item ? l.qty : 0); }, 0), c = $('.tile__count', t);
+      c.hidden = !n; c.textContent = n; t.classList.toggle('in-cart', !!n);
+    });
+  }
   function fromPrice(it) {
     if (it.onRequest) return { main: 'Sur commande', sub: '' };
     var v = it.variants, min = Math.min.apply(null, v.map(function (x) { return x.price; }));
@@ -256,9 +265,12 @@
       cat.items.forEach(function (it) { ITEMS[it.id] = it; it.cat = cat.id; });
     });
     $('#menu').addEventListener('click', function (e) {
-      var b = e.target.closest('.tile'); if (!b) return;
-      var it = ITEMS[b.dataset.item];
-      if (it.onRequest) openRequest(it); else openProduct(it);
+      var add = e.target.closest('[data-add]'), open = e.target.closest('[data-open]');
+      if (!add && !open) return;
+      var it = ITEMS[(add || open).dataset.add || (add || open).dataset.open];
+      if (it.onRequest) openRequest(it);
+      else if (add && isSimple(it)) addLine(it, it.variants[0], [], it.variants[0].price, 1);
+      else openProduct(it);
     });
   }
   function showCat(id, focusTab) {
@@ -270,14 +282,19 @@
     $('#menu').className = 'grid' + (cat.compact ? ' grid--3' : '');
     $('#menu').innerHTML = cat.items.map(function (it, i) {
       var p = fromPrice(it);
-      return '<li><button type="button" class="tile" data-item="' + it.id + '">' +
+      var simple = isSimple(it);
+      return '<li><div class="tile" data-item="' + it.id + '">' +
+        '<button type="button" class="tile__open" data-open="' + it.id + '">' +
         '<span class="tile__img">' + (it.img ? pic(it.img, 320, 240, 'tile__pic', cat.compact ? '(min-width: 700px) 160px, 31vw' : '(min-width: 1000px) 240px, (min-width: 700px) 30vw, 46vw', i < 4) : '') +
         (it.badge ? '<span class="tile__badge">' + esc(it.badge) + '</span>' : '') + '</span>' +
         '<span class="tile__name">' + esc(it.name) + '</span>' +
         (it.desc ? '<span class="tile__desc">' + esc(it.desc) + '</span>' : '') +
-        '<span class="tile__foot"><span class="tile__price">' + p.main + (p.sub ? '<small>' + esc(p.sub) + '</small>' : '') + '</span><span class="tile__plus" aria-hidden="true">+</span></span>' +
-        '</button></li>';
+        '<span class="tile__price">' + p.main + (p.sub ? '<small>' + esc(p.sub) + '</small>' : '') + '</span>' +
+        '</button>' +
+        '<button type="button" class="tile__add" data-add="' + it.id + '" aria-label="' + esc((simple ? 'Ajouter ' : 'Choisir ') + it.name) + '">+</button>' +
+        '<span class="tile__count" hidden></span></div></li>';
     }).join('');
+    updateTileCounts();
     $$('#tabs-scroller .tab').forEach(function (t) {
       var on = t.dataset.cat === cat.id;
       t.setAttribute('aria-selected', String(on));
@@ -299,10 +316,12 @@
     }).join('');
     var fades = function () {
       sc.classList.toggle('at-start', sc.scrollLeft <= 2);
-      sc.classList.toggle('at-end', sc.scrollLeft + sc.clientWidth >= sc.scrollWidth - 2);
+      var end = sc.scrollLeft + sc.clientWidth >= sc.scrollWidth - 2;
+      sc.classList.toggle('at-end', end); $('#tabs-more').hidden = end;
     };
     sc.addEventListener('scroll', fades, { passive: true });
     window.addEventListener('resize', fades);
+    $('#tabs-more').addEventListener('click', function () { sc.scrollBy({ left: sc.clientWidth * .7, behavior: 'smooth' }); });
     sc.addEventListener('click', function (e) {
       var t = e.target.closest('.tab'); if (!t || t.dataset.cat === currentCat) return;
       showCat(t.dataset.cat);
@@ -339,7 +358,7 @@
     $('#p-img').innerHTML = it.img ? pic(it.img, 320, 240, 'p-pic', '(min-width: 600px) 520px, 100vw', true) : '';
     $('#p-name').textContent = it.name;
     var d = $('#p-desc'); d.textContent = [it.desc, it.badge === 'Thé offert' ? 'Thé offert avec cette assiette.' : ''].filter(Boolean).join(' · '); d.hidden = !d.textContent;
-    $('#p-variants').innerHTML = it.variants.length > 1 ? '<fieldset class="group"><legend>Formule</legend><div class="opts opts--variants">' + it.variants.map(function (v, i) {
+    $('#p-variants').innerHTML = it.variants.length > 1 ? '<fieldset class="group"><legend><span><i class="step">1</i>Formule</span></legend><div class="opts opts--variants">' + it.variants.map(function (v, i) {
       return '<label class="opt opt--variant"><input type="radio" name="variant" value="' + i + '"' + (i === 0 ? ' checked' : '') + '><span><b>' + esc(v.label) + '</b>' + (v.sub ? '<small>' + esc(v.sub) + '</small>' : '') + '<em>' + euro(v.price) + '</em></span></label>';
     }).join('') + '</div></fieldset>' : '';
     renderGroups();
@@ -358,7 +377,8 @@
       var defaultFirst = g.radio && !prev.length && g.options[0].price === 0 && g.options.some(function (o) { return o.price; });
       var wide = g.options.some(function (o) { return o.label.length > 15; });
       var hint = g.radio ? (defaultFirst ? 'Facultatif' : 'Obligatoire') : g.min === g.max ? 'Choisissez ' + g.min : g.min ? 'Au moins ' + g.min : 'Facultatif' + (g.max < g.options.length ? ', ' + g.max + ' max.' : '');
-      return '<fieldset class="group" data-g="' + gi + '"><legend>' + esc(g.label) + ' <span class="group__hint" data-hint>' + hint + '</span></legend><div class="opts' + (wide ? ' opts--wide' : '') + '">' +
+      var n = gi + 1 + (pc.it.variants.length > 1 ? 1 : 0);
+      return '<fieldset class="group" data-g="' + gi + '"><legend><span><i class="step">' + n + '</i>' + esc(g.label) + '</span> <span class="group__hint" data-hint>' + hint + '</span></legend><div class="opts' + (wide ? ' opts--wide' : '') + '">' +
         g.options.map(function (o, oi) {
           var on = prev.indexOf(oi) > -1 || (defaultFirst && oi === 0);
           return '<label class="opt"><input type="' + (g.radio ? 'radio' : 'checkbox') + '" name="g-' + g.id + '" value="' + oi + '"' + (on ? ' checked' : '') + '><span>' + esc(o.label) + (o.price ? '<small>+' + euro(o.price) + '</small>' : '') + '</span></label>';
@@ -383,13 +403,26 @@
   }
   function updateProduct() {
     var s = readSel();
-    $('#p-add').textContent = 'Ajouter · ' + euro(s.price * pc.qty);
+    var btn = $('#p-add');
+    btn.textContent = s.missing > -1 ? 'Choisissez : ' + pc.groups[s.missing].label.toLowerCase() : 'Ajouter · ' + euro(s.price * pc.qty);
+    btn.classList.toggle('is-waiting', s.missing > -1);
+    pc.groups.forEach(function (g, gi) { var fs = $('[data-g="' + gi + '"]', productSheet); if (fs) fs.classList.toggle('is-done', (pc.sel[g.id] || []).length >= g.min && (g.min > 0 || (pc.sel[g.id] || []).length > 0)); });
+    return s;
     $('#p-minus').disabled = pc.qty <= 1;
   }
   $('#product-form').addEventListener('change', function (e) {
     if (e.target.name === 'variant') { pc.v = pc.it.variants[+e.target.value]; renderGroups(); }
     var fs = e.target.closest('.group'); if (fs) fs.classList.remove('is-missing');
-    updateProduct();
+    var s = updateProduct();
+    // Passe tout seul à l'étape suivante quand un choix est complet.
+    if (fs && s.missing > -1) {
+      var gi = fs.dataset.g == null ? -1 : +fs.dataset.g, g = pc.groups[gi];
+      var complete = gi < 0 || (g.radio || (pc.sel[g.id] || []).length >= g.max);
+      if (complete && s.missing !== gi) {
+        var next = $('[data-g="' + s.missing + '"]', productSheet);
+        if (next) next.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      }
+    }
   });
   $('#p-minus').addEventListener('click', function () { if (pc.qty > 1) { pc.qty--; $('#p-qty').textContent = pc.qty; updateProduct(); } });
   $('#p-plus').addEventListener('click', function () { if (pc.qty < 30) { pc.qty++; $('#p-qty').textContent = pc.qty; updateProduct(); } });
@@ -452,7 +485,7 @@
     if (ex) ex.qty += qty;
     else cart.push({ key: key, item: it.id, name: it.name, variant: v.id === 'unique' ? '' : v.label, opts: sel, unit: price == null ? v.price : price, qty: qty, student: !!it.student });
     saveCart(); renderCart(true);
-    toast('Ajouté : ' + (qty > 1 ? qty + ' × ' : '') + it.name + (v.id === 'unique' ? '' : ' (' + v.label + ')'));
+    toast('Ajouté : ' + (qty > 1 ? qty + ' × ' : '') + it.name + (v.id === 'unique' ? '' : ' (' + v.label + ')'), true);
   }
   var totals = function () { return cart.reduce(function (a, l) { a.n += l.qty; a.t += l.qty * l.unit; return a; }, { n: 0, t: 0 }); };
   function renderCart(bump) {
@@ -471,7 +504,7 @@
         '<span class="line__opts">' + esc(sub) + '</span>' +
         '<span class="qty"><button type="button" data-dec="' + i + '" aria-label="Retirer un ' + esc(l.name) + '">−</button><output aria-label="Quantité">' + l.qty + '</output><button type="button" data-inc="' + i + '" aria-label="Ajouter un ' + esc(l.name) + '">+</button></span></li>';
     }).join('');
-    checkStudent(); updateWaLink();
+    checkStudent(); updateWaLink(); updateTileCounts();
   }
   $('#cart-lines').addEventListener('click', function (e) {
     var b = e.target.closest('button'); if (!b) return;
@@ -669,10 +702,15 @@
     if (s) document.head.appendChild(s);
   }
   var toastT = 0;
-  function toast(msg) {
-    var t = $('#toast'); t.textContent = msg; t.classList.add('is-on');
-    clearTimeout(toastT); toastT = setTimeout(function () { t.classList.remove('is-on'); }, 2600);
+  function toast(msg, withCart) {
+    var t = $('#toast');
+    t.innerHTML = '<span>' + esc(msg) + '</span>' + (withCart ? '<button type="button" id="toast-cart">Commander</button>' : '');
+    t.classList.add('is-on');
+    clearTimeout(toastT); toastT = setTimeout(function () { t.classList.remove('is-on'); }, withCart ? 3800 : 2600);
   }
+  $('#toast').addEventListener('click', function (e) {
+    if (e.target.id === 'toast-cart') { this.classList.remove('is-on'); $('#open-cart').click(); }
+  });
 
   initTheme(); initPosters(); initDialogs();
 
